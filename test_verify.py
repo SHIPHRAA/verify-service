@@ -2,6 +2,7 @@ import os
 import requests
 import uuid
 import sys
+import json  # NEW: for formatting the response
 
 API_URL = "http://localhost:8000/image-analysis/"
 AUTH_TOKEN = "AAAAAAAAAAAAAAAAAAAAAMYyxwEAAAAAz0pJfDJzr2LNIenV53T%2F1h0dcqs%3DDWus8RaCvnUirgmu1lkttCHq1j0ft3uBGM1Lg6sTTJdlgqRRmA"
@@ -20,9 +21,10 @@ def verify_image(file_path):
     response = requests.post(API_URL, json=payload, headers=headers)
 
     if response.ok:
-        print(f"✅ {file_path} ->", response.json())
+        print(f"\n✅ {file_path} →")
+        print(json.dumps(response.json(), indent=2))  # Pretty print the JSON
     else:
-        print(f"❌ {file_path} -> Error {response.status_code}: {response.text}")
+        print(f"\n❌ {file_path} → Error {response.status_code}: {response.text}")
 
 def process_directory(directory_path):
     supported_extensions = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
