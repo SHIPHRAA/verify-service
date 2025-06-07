@@ -21,7 +21,7 @@ def verify_image(file_path):
     response = requests.post(API_URL, json=payload, headers=headers)
 
     if response.ok:
-        print(f"\n✅ {file_path} →")
+        print(f"\n {file_path} →")
         print(json.dumps(response.json(), indent=2))  # Pretty print the JSON
     else:
         print(f"\n❌ {file_path} → Error {response.status_code}: {response.text}")
