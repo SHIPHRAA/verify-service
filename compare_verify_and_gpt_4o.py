@@ -41,7 +41,7 @@ def analyze_with_gpt4o(image_path):
 
     initial_prompt = (
         "You are an AI-generated image detector. Estimate the likelihood this image was AI-generated. "
-        "Reply only with: 'AI-generated: XX%' or 'Real image: XX% AI-likelihood'. Be confident even if unsure."
+        "Reply only with: 'AI-generated: XX%' or 'Real image: XX% AI-likelihood'. No disclaimers or uncertainty.""
     )
     result = ask(initial_prompt)
 
@@ -71,17 +71,17 @@ def process_directory(image_dir):
                 full_path = os.path.join(root, file)
                 check_id = str(uuid.uuid4())
 
-                print(f"\n📸 Image: {full_path}")
-                print(f"🆔 Image ID: {check_id}")
+                print(f"\n Image: {full_path}")
+                print(f"Image ID: {check_id}")
 
                 try:
                     verify_result = analyze_with_verify_service(full_path, check_id)
                     gpt_result = analyze_with_gpt4o(full_path)
 
-                    print("\n🧠 Verify Service:")
+                    print("\n Verify Service:")
                     print(json.dumps(verify_result.get("result", verify_result), indent=2))
 
-                    print("\n🤖 GPT-4o:")
+                    print("\n GPT-4o:")
                     print(gpt_result)
 
                 except Exception as e:
