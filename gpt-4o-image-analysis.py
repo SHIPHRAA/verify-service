@@ -11,9 +11,7 @@ def encode_image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode("utf-8")
 
-def analyze_image_with_gpt4o(image_path):
-    image_base64 = encode_image_to_base64(image_path)
-
+def call_gpt4o_with_prompt(image_base64, prompt_text):
     response = openai.chat.completions.create(
         model="gpt-4o",
         messages=[
@@ -22,11 +20,7 @@ def analyze_image_with_gpt4o(image_path):
                 "content": [
                     {
                         "type": "text",
-                        "text": (
-                            "You're an AI image authenticity detector. Analyze this image "
-                            "and estimate the percentage likelihood that it is AI-generated. "
-                            "Just give a short answer like: 'AI-generated: 85%' or 'Real image: 10% AI-likelihood'."
-                        )
+                        "text": prompt_text
                     },
                     {
                         "type": "image_url",
@@ -39,8 +33,26 @@ def analyze_image_with_gpt4o(image_path):
         ],
         temperature=0.2,
     )
-
     return response.choices[0].message.content.strip()
+
+def analyze_image_with_gpt4o(image_path):
+    image_base64 = encode_image_to_base64(image_path)
+
+    primary_prompt = (
+        "You are an expert AI-generated image detector. Analyze the image provided and respond with a single line like "
+        "'AI-generated: 90%' or 'Real image: 5% AI-likelihood'. Avoid vague responses. If unsure, still provide your best estimate."
+    )
+
+    response_text = call_gpt4o_with_prompt(image_base64, primary_prompt)
+
+    if any(keyword in response_text.lower() for keyword in ["can't", "unable", "not sure", "unsure", "don't know"]):
+        retry_prompt = (
+            "Be assertive. Estimate how likely this image is AI-generated. Give your best guess. Respond only with: "
+            "'AI-generated: XX%' or 'Real image: XX% AI-likelihood'. No disclaimers or uncertainty."
+        )
+        response_text = call_gpt4o_with_prompt(image_base64, retry_prompt)
+
+    return response_text
 
 def process_directory(directory_path):
     supported_extensions = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
