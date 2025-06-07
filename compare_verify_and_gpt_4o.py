@@ -41,7 +41,7 @@ def analyze_with_gpt4o(image_path):
 
     initial_prompt = (
         "You are an AI-generated image detector. Estimate the likelihood this image was AI-generated. "
-        "Reply only with: 'AI-generated: XX%' or 'Real image: XX% AI-likelihood'. Be confident even if unsure."
+        "Reply only with: 'AI-generated: XX%' or 'Real image: XX% AI-likelihood'. No disclaimers or uncertainty.""
     )
     result = ask(initial_prompt)
 
