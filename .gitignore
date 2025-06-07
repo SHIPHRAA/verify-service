@@ -252,3 +252,4 @@ eggs/
 ./backend/twitter_data_service/config/.env
 
 ckpt/
+static/
