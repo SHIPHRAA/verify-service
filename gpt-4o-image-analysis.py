@@ -63,7 +63,7 @@ def process_directory(directory_path):
                 print(f"\n🔍 {full_path} →")
                 try:
                     result = analyze_image_with_gpt4o(full_path)
-                    print(f"📊 GPT-4o says: {result}")
+                    print(f" GPT-4o says: {result}")
                 except Exception as e:
                     print(f"❌ Error analyzing {full_path}: {str(e)}")
 
