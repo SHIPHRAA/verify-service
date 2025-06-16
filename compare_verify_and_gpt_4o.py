@@ -46,7 +46,6 @@ def analyze_with_gpt4o(image_path):
         "Also assess image composition, compression signs, and background inconsistencies. "
         "Provide your final decision as a single line in this format:\n"
         "Do not return the same percentage for more than one image. Make your estimate specific to each image."
-        "Do not return any percentage that is 85%"
         "'AI-generated: XX%' or 'Real image: XX% AI-likelihood'. Be firm and precise. Do not say 'I don't know'."
     )
 
